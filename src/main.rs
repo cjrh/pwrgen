@@ -1,26 +1,34 @@
 #![feature(core_intrinsics)]
+
 mod methods;
 
 extern crate clap;
 
 use self::methods::passphrase;
-use clap::{App, Arg, SubCommand};
+use clap::{App, Arg};
 
 fn main() {
-        println!("Hello, world!");
+    let matches = App::new("My Program")
+        .version("1.0")
+        .author("Caleb")
+        .about("Blah Blah")
 
-        let matches = App::new("My Program")
-                .version("1.0")
-                .author("Caleb")
-                .about("Blah Blah")
-                .arg(Arg::with_name("verbose")
-                        .short("v")
-                        .long("verbose")
-                        .help("Enable verbosity"))
-                .get_matches();
-        let verb = matches.is_present("verbose");
-        println!("verb = {:?}", verb);
+        .arg(Arg::with_name("separator")
+            .short("s")
+            .long("separator")
+            .help("Word separator for passphrase generation")
+            .default_value(" ")
+        )
 
-        passphrase(3, "abc");
-        println!("end main");
+        .get_matches();
+
+    let sep = match matches.value_of("separator") {
+        Some(s) => s,
+        None => " ",
+    };
+
+    match passphrase(3, sep) {
+        Ok(new_passphrase) => println!("{}", new_passphrase),
+        Err(err) => println!("Error occurred: {:?}", err),
+    }
 }
