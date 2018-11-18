@@ -1,7 +1,11 @@
 [package]
-name = "rust01"
+name = "pwrgen"
 version = "0.1.0"
 authors = ["Caleb Hattingh <caleb.hattingh@gmail.com>"]
 edition = "2018"
 
 [dependencies]
+clap = "2.32.0"
+random_choice = "0.3.2"
+rand = "0.6.0"
+itertools = "0.7.9"
