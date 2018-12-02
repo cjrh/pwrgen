@@ -20,13 +20,29 @@ fn main() {
             .default_value(" ")
         )
 
+        .arg(Arg::with_name("password_length")
+            .short("pwl")
+            .long("password_length")
+            .help("Length")
+            .default_value("16")
+        )
+
         .get_matches();
 
     let sep = match matches.value_of("separator") {
-        Some(s) => s,
+        Some(s) => {
+            println!("{}", passphrase(3, s));
+            s
+        },
         None => " ",
     };
 
-    println!("{}", passphrase(3, sep));
-    println!("{}", password(16, &true, &true, &true, None));
+//    println!("{}", passphrase(3, sep));
+
+    let pwl: u8 = match matches.value_of("password_length") {
+        Some(s) => s.parse().unwrap(),
+        None => 16,
+    };
+
+    println!("{}", password(pwl, &true, &true, &true, None));
 }

@@ -69,17 +69,9 @@ pub fn password(length: u8, numbers: &bool, upper: &bool, lower: &bool,
         None => choicevalues.push_str("!@#$%^&*(){}[]-+=_:;<>?"),
     }
 
-    let pwn = choicevalues.as_bytes();
-    let pw: Vec<u8> = (0..length)
-        .map(|_| pwn.choose(&mut rng).unwrap().clone())
-        .collect();
-
-    // This isn't currently working properly. Need to somehow convert the u8 to utf when
-    // returning the results.
-    join(
-        pw,
-        "",
-    )
+    (0..length)
+        .map(|_| choicevalues.chars().choose(&mut rng).unwrap().clone())
+        .collect()
 }
 
 #[cfg(test)]
@@ -100,7 +92,7 @@ mod tests {
         for i in 1..100 {
             let p = password(i, &true, &true, &true, None);
             println!("{}", p);
-//            assert_eq!(p.len(), i as usize);
+            assert_eq!(p.len(), i as usize);
         }
     }
 }
