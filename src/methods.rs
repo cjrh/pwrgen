@@ -23,3 +23,30 @@ pub fn passphrase(word_count: u8, sep: &str) -> Result<String, Error> {
     );
     Ok(phrase)
 }
+
+pub fn password(length: u8, numbers: &bool, upper: &bool, lower: &bool,
+                special: Option<&str>, ) -> Result<String, Error> {
+    let mut rng = thread_rng();
+    let mut choicevalues= "".to_string();
+
+    if *numbers == true {
+        choicevalues.push_str("0123456789");
+    }
+    if *upper == true {
+        choicevalues.push_str("ABCDEFGIHJKLMNOPQRSTUVWXYZ")
+    }
+    if *lower == true {
+        choicevalues.push_str("abcdefgihjklmnopqrstuvwxyz")
+
+    }
+    match special {
+        Some(v) => choicevalues.push_str(v),
+        None => choicevalues.push_str("!@#$%^&*(){}[]-+=_:;<>?"),
+    }
+
+    let phrase = join(
+        choicevalues.chars().choose_multiple(&mut rng, length as usize),
+        "",
+    );
+    Ok(phrase)
+}

@@ -4,14 +4,14 @@ mod methods;
 
 extern crate clap;
 
-use self::methods::passphrase;
+use self::methods::{passphrase, password};
 use clap::{App, Arg};
 
 fn main() {
-    let matches = App::new("My Program")
+    let matches = App::new("Passphrase Generator")
         .version("1.0")
-        .author("Caleb")
-        .about("Blah Blah")
+        .author("Caleb Hattingh")
+        .about("==============")
 
         .arg(Arg::with_name("separator")
             .short("s")
@@ -29,6 +29,11 @@ fn main() {
 
     match passphrase(3, sep) {
         Ok(new_passphrase) => println!("{}", new_passphrase),
+        Err(err) => println!("Error occurred: {:?}", err),
+    }
+
+    match password(16, &true, &true, &true, None) {
+        Ok(new_password) => println!("{}", new_password),
         Err(err) => println!("Error occurred: {:?}", err),
     }
 }
