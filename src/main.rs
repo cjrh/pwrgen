@@ -13,6 +13,19 @@ fn main() {
         .author("Caleb Hattingh")
         .about("==============")
 
+        .arg(Arg::with_name("type")
+            .short("t")
+            .long("type")
+            .help("password type. Either 'passphrase' or 'password'")
+            .default_value("passphrase")
+        )
+
+        .arg(Arg::with_name("word_count")
+            .short("w")
+            .long("word_count")
+            .default_value("4")
+        )
+
         .arg(Arg::with_name("separator")
             .short("s")
             .long("separator")
@@ -31,7 +44,9 @@ fn main() {
 
     match matches.value_of("separator") {
         Some(s) => {
-            println!("{}", passphrase(3, s));
+            println!("{}", passphrase(
+                matches.value_of("word_count").unwrap().parse().unwrap(),
+                s));
             s
         },
         None => " ",
