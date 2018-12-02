@@ -1,9 +1,21 @@
-use std::io::Error;
+//! Generate a passphrase using a built-in dictionary
+//!
+//! # Examples
+//!
+//! NOTE: due to https://github.com/rust-lang/rust/issues/50784 it currently isn't possible
+//! (actually: easy) to run doctests for projects that have a binary target.
+//!
+//! ```
+//! panic!();
+//! assert_eq!(methods::passphrase(1, " ").unwrap().matches(" ").count(), 0);
+//! ```
 
 extern crate rand;
 
-use rand::thread_rng;
-use rand::seq::IteratorRandom;
+use rand::{thread_rng, Rng};
+use rand::seq::{IteratorRandom, SliceRandom};
+use rand::seq::sample_iter;
+use rand::distributions::Uniform;
 
 extern crate itertools; // 0.7.8
 
@@ -13,19 +25,32 @@ fn _print_type_of<T>(_: &T) {
     println!("{}", unsafe { std::intrinsics::type_name::<T>() });
 }
 
-pub fn passphrase(word_count: u8, sep: &str) -> Result<String, Error> {
+/// The second block
+///
+/// # Examples
+///
+/// ```
+/// assert!(false);
+/// use methods::passphrase;
+///
+/// assert_eq!(passphrase(1, " ").matches(" ").count(), 0);
+/// assert_eq!(passphrase(2, " ").matches(" ").count(), 1);
+/// assert_eq!(passphrase(3, " ").matches(" ").count(), 2);
+/// assert_eq!(passphrase(4, " ").matches(" ").count(), 3);
+/// assert_eq!(passphrase(5, " ").matches(" ").count(), 4);
+/// ```
+pub fn passphrase(word_count: u8, sep: &str) -> String {
     let text = include_str!("words_alpha.txt");
     let lines = text.split_whitespace();
     let mut rng = thread_rng();
-    let phrase = join(
+    join(
         &lines.choose_multiple(&mut rng, word_count as usize),
         sep,
-    );
-    Ok(phrase)
+    )
 }
 
 pub fn password(length: u8, numbers: &bool, upper: &bool, lower: &bool,
-                special: Option<&str>, ) -> Result<String, Error> {
+                special: Option<&str>, ) -> String {
     let mut rng = thread_rng();
     let mut choicevalues= "".to_string();
 
@@ -44,9 +69,41 @@ pub fn password(length: u8, numbers: &bool, upper: &bool, lower: &bool,
         None => choicevalues.push_str("!@#$%^&*(){}[]-+=_:;<>?"),
     }
 
-    let phrase = join(
-        choicevalues.chars().choose_multiple(&mut rng, length as usize),
+    let pwn = choicevalues.as_bytes();
+    let pw: Vec<u8> = (0..length)
+        .map(|_| pwn.choose(&mut rng).unwrap().clone())
+        .collect();
+
+    // This isn't currently working properly. Need to somehow convert the u8 to utf when
+    // returning the results.
+    join(
+        pw,
         "",
-    );
-    Ok(phrase)
+    )
 }
+
+#[cfg(test)]
+mod tests {
+    use super::{passphrase, password};
+
+    #[test]
+    fn test_passphrase() {
+        assert_eq!(passphrase(1, " ").matches(" ").count(), 0);
+        assert_eq!(passphrase(2, " ").matches(" ").count(), 1);
+        assert_eq!(passphrase(3, " ").matches(" ").count(), 2);
+        assert_eq!(passphrase(4, " ").matches(" ").count(), 3);
+        assert_eq!(passphrase(5, " ").matches(" ").count(), 4);
+    }
+
+    #[test]
+    fn test_password() {
+        for i in 1..100 {
+            let p = password(i, &true, &true, &true, None);
+            println!("{}", p);
+//            assert_eq!(p.len(), i as usize);
+        }
+    }
+}
+
+
+

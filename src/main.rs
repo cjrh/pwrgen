@@ -27,13 +27,6 @@ fn main() {
         None => " ",
     };
 
-    match passphrase(3, sep) {
-        Ok(new_passphrase) => println!("{}", new_passphrase),
-        Err(err) => println!("Error occurred: {:?}", err),
-    }
-
-    match password(16, &true, &true, &true, None) {
-        Ok(new_password) => println!("{}", new_password),
-        Err(err) => println!("Error occurred: {:?}", err),
-    }
+    println!("{}", passphrase(3, sep));
+    println!("{}", password(16, &true, &true, &true, None));
 }
