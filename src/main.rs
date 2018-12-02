@@ -29,7 +29,7 @@ fn main() {
 
         .get_matches();
 
-    let sep = match matches.value_of("separator") {
+    match matches.value_of("separator") {
         Some(s) => {
             println!("{}", passphrase(3, s));
             s

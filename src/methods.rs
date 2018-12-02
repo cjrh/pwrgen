@@ -12,10 +12,8 @@
 
 extern crate rand;
 
-use rand::{thread_rng, Rng};
-use rand::seq::{IteratorRandom, SliceRandom};
-use rand::seq::sample_iter;
-use rand::distributions::Uniform;
+use rand::thread_rng;
+use rand::seq::IteratorRandom;
 
 extern crate itertools; // 0.7.8
 
