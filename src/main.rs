@@ -1,5 +1,3 @@
-#![feature(core_intrinsics)]
-
 mod methods;
 
 extern crate clap;

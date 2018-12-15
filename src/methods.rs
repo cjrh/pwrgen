@@ -19,10 +19,6 @@ extern crate itertools; // 0.7.8
 
 use itertools::free::join;
 
-fn _print_type_of<T>(_: &T) {
-    println!("{}", unsafe { std::intrinsics::type_name::<T>() });
-}
-
 /// The second block
 ///
 /// # Examples
