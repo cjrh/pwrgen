@@ -1,6 +1,12 @@
 .. image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg
     :target: https://opensource.org/licenses/Apache-2.0
 
+.. image:: https://img.shields.io/badge/download-windows-green.svg?logo=windows
+    :target: https://github.com/cjrh/pwrgen/releases/download/1%2C0%2C0/pwrgen.exe
+
+.. image:: https://img.shields.io/badge/download-linux-green.svg?logo=linux
+    :target: https://github.com/cjrh/pwrgen/releases/download/1%2C0%2C0/pwrgen
+
 pwrgen
 ======
 
