@@ -63,6 +63,8 @@ pub fn password(length: u8, numbers: &bool, upper: &bool, lower: &bool,
 
     }
     match special {
+        // Zero disables special characters
+        Some("0") => (),
         Some(v) => choicevalues.push_str(v),
         None => choicevalues.push_str("!@#$%^&*(){}[]-+=_:;<>?"),
     }
